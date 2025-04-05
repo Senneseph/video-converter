@@ -1,0 +1,12 @@
+services:
+  # YouTube Converter Service
+  youtube-converter:
+    build:
+      context: . # Build the image from the Dockerfile in the current directory
+      dockerfile: Dockerfile # Specify the Dockerfile to use
+    container_name: youtube_converter
+    ports:
+      - "${PORT:-1337}:80" # Set port and map to host
+    env_file:
+      - .env # Load environment variables from the .env file
+    restart: unless-stopped
