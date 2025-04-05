@@ -7,4 +7,4 @@ COPY ./html /usr/share/nginx/html
 
 EXPOSE 80
 # Set the working directory in the container
-WORKDIR /app
+# WORKDIR /app

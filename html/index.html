@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Video Processor (Courtesy of DeepSite)</title>
+    <title>Multi-Platform Video Processor</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -40,20 +40,34 @@
             background-color: white;
             z-index: 10;
         }
+        .platform-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+        .youtube-icon { background-color: #FF0000; color: white; }
+        .instagram-icon { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); color: white; }
+        .twitter-icon { background-color: #1DA1F2; color: white; }
+        .facebook-icon { background-color: #1877F2; color: white; }
+        .tiktok-icon { background-color: #000000; color: white; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="gradient-bg text-white py-12 px-4 shadow-lg">
         <div class="max-w-6xl mx-auto">
-            <h1 class="text-4xl font-bold mb-2">YouTube Video Processor</h1>
-            <p class="text-xl opacity-90 mb-8">Extract captions, generate summaries, and create presentations from any YouTube video</p>
+            <h1 class="text-4xl font-bold mb-2">Multi-Platform Video Processor</h1>
+            <p class="text-xl opacity-90 mb-8">Extract captions, generate summaries, and create presentations from videos on YouTube, Instagram, X, Facebook, and TikTok</p>
             
             <div class="bg-white bg-opacity-20 rounded-xl p-6 backdrop-blur-sm">
                 <div class="flex flex-col md:flex-row gap-4">
                     <input 
                         type="text" 
-                        id="youtubeUrl" 
-                        placeholder="Paste YouTube URL here..." 
+                        id="videoUrl" 
+                        placeholder="Paste video URL from any supported platform..." 
                         class="flex-grow px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-300"
                     >
                     <button 
@@ -64,7 +78,7 @@
                     </button>
                 </div>
                 
-                <div class="mt-4 flex flex-wrap gap-3">
+                <div class="mt-4 flex flex-wrap gap-3 text-white">
                     <div class="flex items-center">
                         <input type="checkbox" id="extractCaptions" class="mr-2" checked>
                         <label for="extractCaptions">Extract Captions</label>
@@ -76,6 +90,29 @@
                     <div class="flex items-center">
                         <input type="checkbox" id="createSlides" class="mr-2" checked>
                         <label for="createSlides">Create Slide Presentation</label>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex flex-wrap gap-4">
+                    <div class="flex items-center bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        <span class="platform-icon youtube-icon"><i class="fab fa-youtube"></i></span>
+                        <span>YouTube</span>
+                    </div>
+                    <div class="flex items-center bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        <span class="platform-icon instagram-icon"><i class="fab fa-instagram"></i></span>
+                        <span>Instagram</span>
+                    </div>
+                    <div class="flex items-center bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        <span class="platform-icon twitter-icon"><i class="fab fa-twitter"></i></span>
+                        <span>X (Twitter)</span>
+                    </div>
+                    <div class="flex items-center bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        <span class="platform-icon facebook-icon"><i class="fab fa-facebook-f"></i></span>
+                        <span>Facebook</span>
+                    </div>
+                    <div class="flex items-center bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        <span class="platform-icon tiktok-icon"><i class="fab fa-tiktok"></i></span>
+                        <span>TikTok</span>
                     </div>
                 </div>
             </div>
@@ -106,8 +143,11 @@
                         <img id="videoThumbnail" src="" alt="Video thumbnail" class="w-full h-full object-cover">
                     </div>
                     <div class="p-6 md:w-2/3">
-                        <h2 id="videoTitle" class="text-2xl font-bold text-gray-800 mb-2"></h2>
-                        <p id="videoChannel" class="text-gray-600 mb-4"></p>
+                        <div class="flex items-center mb-2">
+                            <span id="platformIcon" class="platform-icon youtube-icon mr-2"><i class="fab fa-youtube"></i></span>
+                            <h2 id="videoTitle" class="text-2xl font-bold text-gray-800"></h2>
+                        </div>
+                        <p id="videoAuthor" class="text-gray-600 mb-4"></p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700">
                                 <i class="fas fa-clock mr-1"></i> <span id="videoDuration"></span>
@@ -117,6 +157,9 @@
                             </span>
                             <span class="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700">
                                 <i class="fas fa-calendar mr-1"></i> <span id="videoDate"></span>
+                            </span>
+                            <span id="platformBadge" class="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700">
+                                <i class="fab fa-youtube mr-1"></i> <span>YouTube</span>
                             </span>
                         </div>
                         <p id="videoDescription" class="text-gray-700"></p>
@@ -230,7 +273,7 @@
             
             // Process button functionality
             const processBtn = document.getElementById('processBtn');
-            const youtubeUrlInput = document.getElementById('youtubeUrl');
+            const videoUrlInput = document.getElementById('videoUrl');
             const loadingState = document.getElementById('loadingState');
             const resultsContainer = document.getElementById('resultsContainer');
             const errorState = document.getElementById('errorState');
@@ -240,16 +283,17 @@
             processBtn.addEventListener('click', processVideo);
             
             function processVideo() {
-                const url = youtubeUrlInput.value.trim();
+                const url = videoUrlInput.value.trim();
                 
                 if (!url) {
-                    showError("Please enter a YouTube URL");
+                    showError("Please enter a video URL");
                     return;
                 }
                 
-                // Validate YouTube URL
-                if (!isValidYouTubeUrl(url)) {
-                    showError("Please enter a valid YouTube URL");
+                // Validate video URL
+                const platform = detectPlatform(url);
+                if (!platform) {
+                    showError("Unsupported platform. Please use YouTube, Instagram, X (Twitter), Facebook, or TikTok.");
                     return;
                 }
                 
@@ -259,15 +303,25 @@
                 errorState.classList.add('hidden');
                 
                 // Simulate processing (in a real app, this would be an API call)
-                simulateProcessing();
+                simulateProcessing(platform);
             }
             
-            function isValidYouTubeUrl(url) {
-                const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
-                return pattern.test(url);
+            function detectPlatform(url) {
+                // YouTube patterns
+                if (url.match(/(youtube\.com|youtu\.be)/i)) return 'youtube';
+                // Instagram patterns
+                if (url.match(/(instagram\.com|instagr\.am)/i)) return 'instagram';
+                // X (Twitter) patterns
+                if (url.match(/(twitter\.com|x\.com)/i)) return 'twitter';
+                // Facebook patterns
+                if (url.match(/(facebook\.com|fb\.com|fb\.watch)/i)) return 'facebook';
+                // TikTok patterns
+                if (url.match(/(tiktok\.com|tiktokv\.com)/i)) return 'tiktok';
+                
+                return null;
             }
             
-            function simulateProcessing() {
+            function simulateProcessing(platform) {
                 let progress = 0;
                 const interval = setInterval(() => {
                     progress += Math.random() * 10;
@@ -276,7 +330,7 @@
                         clearInterval(interval);
                         
                         // Show results after a short delay
-                        setTimeout(showResults, 500);
+                        setTimeout(() => showResults(platform), 500);
                     }
                     
                     progressBar.style.width = `${progress}%`;
@@ -284,20 +338,61 @@
                 }, 500);
             }
             
-            function showResults() {
+            function showResults(platform) {
                 loadingState.classList.add('hidden');
+                
+                // Update UI based on platform
+                updatePlatformUI(platform);
                 
                 // In a real app, you would fetch actual data from an API
                 // For this demo, we'll use mock data
-                populateVideoInfo();
-                populateCaptions();
-                populateSummary();
-                populateSlides();
+                populateVideoInfo(platform);
+                populateCaptions(platform);
+                populateSummary(platform);
+                populateSlides(platform);
                 
                 resultsContainer.classList.remove('hidden');
                 
                 // Initialize waveform visualization
                 createWaveform();
+            }
+            
+            function updatePlatformUI(platform) {
+                const platformIcon = document.getElementById('platformIcon');
+                const platformBadge = document.getElementById('platformBadge');
+                
+                // Clear existing classes
+                platformIcon.className = 'platform-icon mr-2';
+                platformBadge.innerHTML = '';
+                
+                // Set platform-specific UI
+                switch(platform) {
+                    case 'youtube':
+                        platformIcon.classList.add('youtube-icon');
+                        platformIcon.innerHTML = '<i class="fab fa-youtube"></i>';
+                        platformBadge.innerHTML = '<i class="fab fa-youtube mr-1"></i> <span>YouTube</span>';
+                        break;
+                    case 'instagram':
+                        platformIcon.classList.add('instagram-icon');
+                        platformIcon.innerHTML = '<i class="fab fa-instagram"></i>';
+                        platformBadge.innerHTML = '<i class="fab fa-instagram mr-1"></i> <span>Instagram</span>';
+                        break;
+                    case 'twitter':
+                        platformIcon.classList.add('twitter-icon');
+                        platformIcon.innerHTML = '<i class="fab fa-twitter"></i>';
+                        platformBadge.innerHTML = '<i class="fab fa-twitter mr-1"></i> <span>X (Twitter)</span>';
+                        break;
+                    case 'facebook':
+                        platformIcon.classList.add('facebook-icon');
+                        platformIcon.innerHTML = '<i class="fab fa-facebook-f"></i>';
+                        platformBadge.innerHTML = '<i class="fab fa-facebook-f mr-1"></i> <span>Facebook</span>';
+                        break;
+                    case 'tiktok':
+                        platformIcon.classList.add('tiktok-icon');
+                        platformIcon.innerHTML = '<i class="fab fa-tiktok"></i>';
+                        platformBadge.innerHTML = '<i class="fab fa-tiktok mr-1"></i> <span>TikTok</span>';
+                        break;
+                }
             }
             
             function showError(message) {
@@ -307,37 +402,120 @@
                 document.getElementById('errorMessage').textContent = message;
             }
             
-            function populateVideoInfo() {
-                // Mock data - in a real app, you would fetch this from an API
-                document.getElementById('videoTitle').textContent = "How to Build a Modern Web Application";
-                document.getElementById('videoChannel').textContent = "by Web Dev Simplified";
-                document.getElementById('videoDuration').textContent = "12:34";
-                document.getElementById('videoViews').textContent = "1,234,567";
-                document.getElementById('videoDate').textContent = "May 15, 2023";
-                document.getElementById('videoDescription').textContent = "In this tutorial, we'll walk through building a complete modern web application using the latest technologies including React, Tailwind CSS, and Node.js.";
-                document.getElementById('videoThumbnail').src = "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg";
+            function populateVideoInfo(platform) {
+                // Mock data for different platforms
+                const mockData = {
+                    youtube: {
+                        title: "How to Build a Modern Web Application",
+                        author: "by Web Dev Simplified",
+                        duration: "12:34",
+                        views: "1,234,567",
+                        date: "May 15, 2023",
+                        description: "In this tutorial, we'll walk through building a complete modern web application using the latest technologies including React, Tailwind CSS, and Node.js.",
+                        thumbnail: "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+                    },
+                    instagram: {
+                        title: "Quick UI Design Tips",
+                        author: "@designmaster",
+                        duration: "1:45",
+                        views: "245,892",
+                        date: "3 days ago",
+                        description: "Here are 5 quick tips to improve your UI designs instantly. #design #uidesign #creativity",
+                        thumbnail: "https://via.placeholder.com/400x500/e1306c/ffffff?text=Instagram+Video"
+                    },
+                    twitter: {
+                        title: "Breaking News Update",
+                        author: "@newsnetwork",
+                        duration: "2:30",
+                        views: "1,892,456",
+                        date: "1 hour ago",
+                        description: "Live update on the current situation. Stay tuned for more details as they come in. #breakingnews",
+                        thumbnail: "https://via.placeholder.com/400x225/1DA1F2/ffffff?text=X+Video"
+                    },
+                    facebook: {
+                        title: "Family Vacation Highlights",
+                        author: "Travel Adventures",
+                        duration: "5:12",
+                        views: "56,789",
+                        date: "1 week ago",
+                        description: "Our amazing family vacation to Hawaii! So many wonderful memories made. 🌴🌊 #familytime #vacation",
+                        thumbnail: "https://via.placeholder.com/400x225/1877F2/ffffff?text=Facebook+Video"
+                    },
+                    tiktok: {
+                        title: "Dance Challenge",
+                        author: "@dancequeen",
+                        duration: "0:45",
+                        views: "3,456,789",
+                        date: "2 days ago",
+                        description: "Trying out the latest dance trend! How did I do? 👀 #dance #trend #viral",
+                        thumbnail: "https://via.placeholder.com/300x500/000000/ffffff?text=TikTok+Video"
+                    }
+                };
+                
+                const data = mockData[platform];
+                
+                document.getElementById('videoTitle').textContent = data.title;
+                document.getElementById('videoAuthor').textContent = data.author;
+                document.getElementById('videoDuration').textContent = data.duration;
+                document.getElementById('videoViews').textContent = data.views;
+                document.getElementById('videoDate').textContent = data.date;
+                document.getElementById('videoDescription').textContent = data.description;
+                document.getElementById('videoThumbnail').src = data.thumbnail;
             }
             
-            function populateCaptions() {
+            function populateCaptions(platform) {
                 const captionsContent = document.getElementById('captionsContent');
                 captionsContent.innerHTML = '';
                 
-                // Mock captions data
-                const mockCaptions = [
-                    { time: "00:00:05", text: "Welcome to this tutorial on building modern web applications." },
-                    { time: "00:00:12", text: "Today we'll be covering three main topics." },
-                    { time: "00:00:18", text: "First, we'll look at the frontend with React." },
-                    { time: "00:00:25", text: "Then we'll style our app using Tailwind CSS." },
-                    { time: "00:00:32", text: "Finally, we'll build a backend API with Node.js." },
-                    { time: "00:01:45", text: "Let's start by creating a new React project." },
-                    { time: "00:03:20", text: "Now we'll add some basic components to our app." },
-                    { time: "00:05:10", text: "This is how you create reusable components in React." },
-                    { time: "00:08:30", text: "Now let's make our UI look great with Tailwind CSS." },
-                    { time: "00:10:45", text: "Finally, we'll connect to our Node.js backend API." },
-                    { time: "00:12:20", text: "That's it for this tutorial! Thanks for watching." }
-                ];
+                // Mock captions data for different platforms
+                const mockCaptions = {
+                    youtube: [
+                        { time: "00:00:05", text: "Welcome to this tutorial on building modern web applications." },
+                        { time: "00:00:12", text: "Today we'll be covering three main topics." },
+                        { time: "00:00:18", text: "First, we'll look at the frontend with React." },
+                        { time: "00:00:25", text: "Then we'll style our app using Tailwind CSS." },
+                        { time: "00:00:32", text: "Finally, we'll build a backend API with Node.js." },
+                        { time: "00:01:45", text: "Let's start by creating a new React project." },
+                        { time: "00:03:20", text: "Now we'll add some basic components to our app." },
+                        { time: "00:05:10", text: "This is how you create reusable components in React." },
+                        { time: "00:08:30", text: "Now let's make our UI look great with Tailwind CSS." },
+                        { time: "00:10:45", text: "Finally, we'll connect to our Node.js backend API." },
+                        { time: "00:12:20", text: "That's it for this tutorial! Thanks for watching." }
+                    ],
+                    instagram: [
+                        { time: "00:00:01", text: "Here are 5 quick UI design tips you can use right now." },
+                        { time: "00:00:12", text: "Tip 1: Use consistent spacing between elements." },
+                        { time: "00:00:23", text: "Tip 2: Stick to a limited color palette." },
+                        { time: "00:00:35", text: "Tip 3: Pay attention to typography hierarchy." },
+                        { time: "00:00:48", text: "Tip 4: Add subtle animations for better UX." },
+                        { time: "00:01:05", text: "Tip 5: Test your designs on real devices." },
+                        { time: "00:01:30", text: "Follow for more design tips! #design #ui" }
+                    ],
+                    twitter: [
+                        { time: "00:00:03", text: "We're live with breaking news updates." },
+                        { time: "00:00:15", text: "The situation is developing rapidly." },
+                        { time: "00:00:45", text: "Authorities have confirmed the incident." },
+                        { time: "00:01:20", text: "More details are expected shortly." },
+                        { time: "00:02:05", text: "Stay tuned for further updates." }
+                    ],
+                    facebook: [
+                        { time: "00:00:02", text: "Our amazing family vacation highlights!" },
+                        { time: "00:00:45", text: "First stop: Waikiki Beach in Honolulu." },
+                        { time: "00:01:30", text: "The kids loved the Polynesian Cultural Center." },
+                        { time: "00:02:45", text: "Snorkeling at Hanauma Bay was incredible." },
+                        { time: "00:04:10", text: "Sunset dinner cruise on our last night." },
+                        { time: "00:05:00", text: "Can't wait to come back to Hawaii!" }
+                    ],
+                    tiktok: [
+                        { time: "00:00:01", text: "Trying the new dance challenge!" },
+                        { time: "00:00:10", text: "First move: side step with arm wave." },
+                        { time: "00:00:20", text: "Now the spin and clap combination." },
+                        { time: "00:00:30", text: "Finish with the signature pose." },
+                        { time: "00:00:40", text: "How did I do? Comment below!" }
+                    ]
+                };
                 
-                mockCaptions.forEach(caption => {
+                mockCaptions[platform].forEach(caption => {
                     const captionElement = document.createElement('div');
                     captionElement.className = 'mb-4 p-3 hover:bg-gray-100 rounded-lg cursor-pointer slide-transition';
                     captionElement.innerHTML = `
@@ -357,7 +535,7 @@
                 // Set up download button
                 document.getElementById('downloadCaptions').addEventListener('click', function() {
                     // In a real app, this would generate a downloadable file
-                    alert("In a real implementation, this would download the captions as a text file.");
+                    alert(`In a real implementation, this would download the ${platform} video captions as a text file.`);
                 });
             }
             
@@ -374,77 +552,243 @@
                 element.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
             
-            function populateSummary() {
+            function populateSummary(platform) {
                 const summaryContent = document.getElementById('summaryContent');
                 
-                // Mock AI summary
-                summaryContent.innerHTML = `
-                    <h3 class="text-lg font-semibold mb-4">Key Points from the Video</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li>The tutorial covers building a full-stack web application using React, Tailwind CSS, and Node.js</li>
-                        <li>It begins with setting up a new React project and creating basic components</li>
-                        <li>The video demonstrates how to make reusable components in React</li>
-                        <li>Tailwind CSS is used for styling the application with utility classes</li>
-                        <li>The backend is built with Node.js to create a RESTful API</li>
-                        <li>The tutorial shows how to connect the React frontend to the Node.js backend</li>
-                    </ul>
-                    
-                    <h3 class="text-lg font-semibold mt-6 mb-4">Actionable Takeaways</h3>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li>Use <code>create-react-app</code> to quickly bootstrap a new React project</li>
-                        <li>Structure your components for reusability and maintainability</li>
-                        <li>Leverage Tailwind's utility classes for rapid UI development</li>
-                        <li>Implement proper error handling in your API endpoints</li>
-                        <li>Use environment variables for configuration between development and production</li>
-                    </ol>
-                `;
+                // Mock AI summaries for different platforms
+                const mockSummaries = {
+                    youtube: `
+                        <h3 class="text-lg font-semibold mb-4">Key Points from the Video</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>The tutorial covers building a full-stack web application using React, Tailwind CSS, and Node.js</li>
+                            <li>It begins with setting up a new React project and creating basic components</li>
+                            <li>The video demonstrates how to make reusable components in React</li>
+                            <li>Tailwind CSS is used for styling the application with utility classes</li>
+                            <li>The backend is built with Node.js to create a RESTful API</li>
+                            <li>The tutorial shows how to connect the React frontend to the Node.js backend</li>
+                        </ul>
+                        
+                        <h3 class="text-lg font-semibold mt-6 mb-4">Actionable Takeaways</h3>
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <li>Use <code>create-react-app</code> to quickly bootstrap a new React project</li>
+                            <li>Structure your components for reusability and maintainability</li>
+                            <li>Leverage Tailwind's utility classes for rapid UI development</li>
+                            <li>Implement proper error handling in your API endpoints</li>
+                            <li>Use environment variables for configuration between development and production</li>
+                        </ol>
+                    `,
+                    instagram: `
+                        <h3 class="text-lg font-semibold mb-4">Video Summary</h3>
+                        <p>This Instagram video provides 5 quick UI design tips:</p>
+                        <ol class="list-decimal pl-5 space-y-2 mt-2">
+                            <li>Maintain consistent spacing between elements for visual harmony</li>
+                            <li>Limit your color palette to 2-3 primary colors with shades</li>
+                            <li>Establish clear typography hierarchy with heading levels</li>
+                            <li>Incorporate subtle animations to enhance user experience</li>
+                            <li>Always test designs on actual devices for accurate representation</li>
+                        </ol>
+                        <p class="mt-4">The video emphasizes that small improvements in these areas can significantly enhance overall design quality.</p>
+                    `,
+                    twitter: `
+                        <h3 class="text-lg font-semibold mb-4">Breaking News Summary</h3>
+                        <p>This X (Twitter) video provides live updates on a developing news situation:</p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li>The incident is currently unfolding with rapid developments</li>
+                            <li>Authorities have confirmed the basic facts of the situation</li>
+                            <li>Additional details are expected to be released shortly</li>
+                            <li>Viewers are advised to stay tuned for official updates</li>
+                        </ul>
+                        <p class="mt-4">The video serves as an initial report with more comprehensive coverage anticipated as information becomes available.</p>
+                    `,
+                    facebook: `
+                        <h3 class="text-lg font-semibold mb-4">Vacation Highlights</h3>
+                        <p>This Facebook video documents a family's vacation to Hawaii:</p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li>The family visited Waikiki Beach in Honolulu</li>
+                            <li>They enjoyed cultural experiences at the Polynesian Cultural Center</li>
+                            <li>Snorkeling at Hanauma Bay was a memorable activity</li>
+                            <li>The trip concluded with a sunset dinner cruise</li>
+                        </ul>
+                        <p class="mt-4">The video captures joyful family moments and showcases Hawaii's beautiful scenery and activities.</p>
+                    `,
+                    tiktok: `
+                        <h3 class="text-lg font-semibold mb-4">Dance Challenge Breakdown</h3>
+                        <p>This TikTok video features a user attempting a popular dance challenge:</p>
+                        <ol class="list-decimal pl-5 space-y-2 mt-2">
+                            <li>The dance begins with a side step combined with an arm wave</li>
+                            <li>This transitions into a spin and clap combination</li>
+                            <li>The routine concludes with a signature pose</li>
+                        </ol>
+                        <p class="mt-4">The creator invites viewers to comment on their performance of this trending dance.</p>
+                    `
+                };
+                
+                summaryContent.innerHTML = mockSummaries[platform];
             }
             
-            function populateSlides() {
+            function populateSlides(platform) {
                 const slidesContainer = document.getElementById('slidesContainer');
                 slidesContainer.innerHTML = '';
                 
-                // Mock slide data
-                const mockSlides = [
-                    { 
-                        time: "00:00", 
-                        title: "Introduction", 
-                        image: "https://via.placeholder.com/400x225/4f46e5/ffffff?text=Introduction",
-                        content: "Overview of building a modern web application with React, Tailwind, and Node.js"
-                    },
-                    { 
-                        time: "02:15", 
-                        title: "React Setup", 
-                        image: "https://via.placeholder.com/400x225/7c3aed/ffffff?text=React+Setup",
-                        content: "Creating a new React project and initial component structure"
-                    },
-                    { 
-                        time: "04:30", 
-                        title: "Component Design", 
-                        image: "https://via.placeholder.com/400x225/10b981/ffffff?text=Components",
-                        content: "Building reusable components with proper props and state management"
-                    },
-                    { 
-                        time: "06:45", 
-                        title: "Tailwind Styling", 
-                        image: "https://via.placeholder.com/400x225/f59e0b/ffffff?text=Styling",
-                        content: "Using Tailwind CSS utility classes to style the application"
-                    },
-                    { 
-                        time: "09:20", 
-                        title: "Node.js Backend", 
-                        image: "https://via.placeholder.com/400x225/ef4444/ffffff?text=Backend",
-                        content: "Setting up a Node.js server with Express and creating API endpoints"
-                    },
-                    { 
-                        time: "11:50", 
-                        title: "Frontend-Backend Connection", 
-                        image: "https://via.placeholder.com/400x225/3b82f6/ffffff?text=Integration",
-                        content: "Connecting the React frontend to the Node.js backend using fetch API"
-                    }
-                ];
+                // Mock slide data for different platforms
+                const mockSlides = {
+                    youtube: [
+                        { 
+                            time: "00:00", 
+                            title: "Introduction", 
+                            image: "https://via.placeholder.com/400x225/4f46e5/ffffff?text=Introduction",
+                            content: "Overview of building a modern web application with React, Tailwind, and Node.js"
+                        },
+                        { 
+                            time: "02:15", 
+                            title: "React Setup", 
+                            image: "https://via.placeholder.com/400x225/7c3aed/ffffff?text=React+Setup",
+                            content: "Creating a new React project and initial component structure"
+                        },
+                        { 
+                            time: "04:30", 
+                            title: "Component Design", 
+                            image: "https://via.placeholder.com/400x225/10b981/ffffff?text=Components",
+                            content: "Building reusable components with proper props and state management"
+                        },
+                        { 
+                            time: "06:45", 
+                            title: "Tailwind Styling", 
+                            image: "https://via.placeholder.com/400x225/f59e0b/ffffff?text=Styling",
+                            content: "Using Tailwind CSS utility classes to style the application"
+                        },
+                        { 
+                            time: "09:20", 
+                            title: "Node.js Backend", 
+                            image: "https://via.placeholder.com/400x225/ef4444/ffffff?text=Backend",
+                            content: "Setting up a Node.js server with Express and creating API endpoints"
+                        },
+                        { 
+                            time: "11:50", 
+                            title: "Frontend-Backend Connection", 
+                            image: "https://via.placeholder.com/400x225/3b82f6/ffffff?text=Integration",
+                            content: "Connecting the React frontend to the Node.js backend using fetch API"
+                        }
+                    ],
+                    instagram: [
+                        { 
+                            time: "00:00", 
+                            title: "Intro", 
+                            image: "https://via.placeholder.com/300x500/e1306c/ffffff?text=UI+Tips",
+                            content: "5 quick UI design tips you can use right now"
+                        },
+                        { 
+                            time: "00:12", 
+                            title: "Tip 1: Spacing", 
+                            image: "https://via.placeholder.com/300x500/e1306c/ffffff?text=Consistent+Spacing",
+                            content: "Maintain consistent spacing between elements"
+                        },
+                        { 
+                            time: "00:23", 
+                            title: "Tip 2: Colors", 
+                            image: "https://via.placeholder.com/300x500/e1306c/ffffff?text=Color+Palette",
+                            content: "Limit your color palette to 2-3 primary colors"
+                        },
+                        { 
+                            time: "00:35", 
+                            title: "Tip 3: Typography", 
+                            image: "https://via.placeholder.com/300x500/e1306c/ffffff?text=Typography",
+                            content: "Establish clear typography hierarchy"
+                        },
+                        { 
+                            time: "00:48", 
+                            title: "Tip 4: Animations", 
+                            image: "https://via.placeholder.com/300x500/e1306c/ffffff?text=Animations",
+                            content: "Add subtle animations for better UX"
+                        },
+                        { 
+                            time: "01:05", 
+                            title: "Tip 5: Testing", 
+                            image: "https://via.placeholder.com/300x500/e1306c/ffffff?text=Device+Testing",
+                            content: "Always test designs on actual devices"
+                        }
+                    ],
+                    twitter: [
+                        { 
+                            time: "00:00", 
+                            title: "Breaking News", 
+                            image: "https://via.placeholder.com/400x225/1DA1F2/ffffff?text=Breaking+News",
+                            content: "Live update on the current situation"
+                        },
+                        { 
+                            time: "00:45", 
+                            title: "Confirmed Details", 
+                            image: "https://via.placeholder.com/400x225/1DA1F2/ffffff?text=Confirmed",
+                            content: "Authorities have confirmed the incident"
+                        },
+                        { 
+                            time: "01:20", 
+                            title: "More Coming", 
+                            image: "https://via.placeholder.com/400x225/1DA1F2/ffffff?text=More+Details",
+                            content: "Additional details expected shortly"
+                        }
+                    ],
+                    facebook: [
+                        { 
+                            time: "00:00", 
+                            title: "Vacation Start", 
+                            image: "https://via.placeholder.com/400x225/1877F2/ffffff?text=Hawaii+Vacation",
+                            content: "Our family vacation to Hawaii begins"
+                        },
+                        { 
+                            time: "00:45", 
+                            title: "Waikiki Beach", 
+                            image: "https://via.placeholder.com/400x225/1877F2/ffffff?text=Waikiki",
+                            content: "First stop: Waikiki Beach in Honolulu"
+                        },
+                        { 
+                            time: "01:30", 
+                            title: "Cultural Center", 
+                            image: "https://via.placeholder.com/400x225/1877F2/ffffff?text=Cultural+Center",
+                            content: "Kids loved the Polynesian Cultural Center"
+                        },
+                        { 
+                            time: "02:45", 
+                            title: "Snorkeling", 
+                            image: "https://via.placeholder.com/400x225/1877F2/ffffff?text=Hanauma+Bay",
+                            content: "Snorkeling at Hanauma Bay was incredible"
+                        },
+                        { 
+                            time: "04:10", 
+                            title: "Sunset Cruise", 
+                            image: "https://via.placeholder.com/400x225/1877F2/ffffff?text=Sunset+Cruise",
+                            content: "Dinner cruise on our last night"
+                        }
+                    ],
+                    tiktok: [
+                        { 
+                            time: "00:00", 
+                            title: "Dance Start", 
+                            image: "https://via.placeholder.com/300x500/000000/ffffff?text=Dance+Start",
+                            content: "Beginning the new dance challenge"
+                        },
+                        { 
+                            time: "00:10", 
+                            title: "First Move", 
+                            image: "https://via.placeholder.com/300x500/000000/ffffff?text=Side+Step",
+                            content: "Side step with arm wave combination"
+                        },
+                        { 
+                            time: "00:20", 
+                            title: "Spin & Clap", 
+                            image: "https://via.placeholder.com/300x500/000000/ffffff?text=Spin+Clap",
+                            content: "Transition into spin and clap move"
+                        },
+                        { 
+                            time: "00:30", 
+                            title: "Final Pose", 
+                            image: "https://via.placeholder.com/300x500/000000/ffffff?text=Signature+Pose",
+                            content: "Finish with the signature pose"
+                        }
+                    ]
+                };
                 
-                mockSlides.forEach(slide => {
+                mockSlides[platform].forEach(slide => {
                     const slideElement = document.createElement('div');
                     slideElement.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition';
                     slideElement.innerHTML = `
@@ -466,7 +810,7 @@
                 // Set up download button
                 document.getElementById('downloadSlides').addEventListener('click', function() {
                     // In a real app, this would generate a downloadable PDF
-                    alert("In a real implementation, this would generate a PDF slide deck.");
+                    alert(`In a real implementation, this would generate a PDF slide deck from the ${platform} video.`);
                 });
             }
             
@@ -504,11 +848,11 @@
             // Try again button
             document.getElementById('tryAgainBtn').addEventListener('click', function() {
                 errorState.classList.add('hidden');
-                youtubeUrlInput.focus();
+                videoUrlInput.focus();
             });
             
             // Allow pressing Enter to process video
-            youtubeUrlInput.addEventListener('keypress', function(e) {
+            videoUrlInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     processVideo();
                 }
