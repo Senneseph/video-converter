@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.05"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="100" cy="530" r="200" fill="white" opacity="0.05"/>
+  <circle cx="1100" cy="100" r="150" fill="white" opacity="0.05"/>
+  
+  <!-- Main content card -->
+  <rect x="60" y="80" width="1080" height="470" rx="24" fill="url(#cardGrad)" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
+  
+  <!-- Icon/Logo area -->
+  <g transform="translate(120, 140)">
+    <!-- Film frame -->
+    <rect width="200" height="140" rx="12" fill="white" opacity="0.95"/>
+    <!-- Perforations left -->
+    <rect x="12" y="12" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <rect x="12" y="40" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <rect x="12" y="68" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <rect x="12" y="96" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <!-- Perforations right -->
+    <rect x="174" y="12" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <rect x="174" y="40" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <rect x="174" y="68" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <rect x="174" y="96" width="14" height="20" rx="3" fill="url(#bg)"/>
+    <!-- Play button -->
+    <circle cx="100" cy="70" r="32" fill="url(#bg)" opacity="0.9"/>
+    <polygon points="92,54 92,86 116,70" fill="white"/>
+    <!-- Arrow -->
+    <path d="M60 120 L100 100 L140 120" stroke="url(#bg)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M100 100 L100 135" stroke="url(#bg)" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="360" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="white">Video Processor</text>
+  
+  <!-- Subtitle -->
+  <text x="360" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="26" fill="white" opacity="0.9">Extract • Summarize • Transform</text>
+  
+  <!-- Platform icons row -->
+  <g transform="translate(360, 300)">
+    <!-- YouTube -->
+    <rect x="0" y="0" width="44" height="44" rx="8" fill="white" opacity="0.15"/>
+    <text x="22" y="30" font-family="Arial" font-size="20" fill="white" text-anchor="middle">▶</text>
+    <!-- Instagram -->
+    <rect x="56" y="0" width="44" height="44" rx="8" fill="white" opacity="0.15"/>
+    <rect x="68" y="12" width="20" height="20" rx="4" stroke="white" stroke-width="2" fill="none"/>
+    <circle cx="78" cy="22" r="5" stroke="white" stroke-width="2" fill="none"/>
+    <!-- X/Twitter -->
+    <rect x="112" y="0" width="44" height="44" rx="8" fill="white" opacity="0.15"/>
+    <text x="134" y="32" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">𝕏</text>
+    <!-- Facebook -->
+    <rect x="168" y="0" width="44" height="44" rx="8" fill="white" opacity="0.15"/>
+    <text x="190" y="32" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">f</text>
+    <!-- TikTok -->
+    <rect x="224" y="0" width="44" height="44" rx="8" fill="white" opacity="0.15"/>
+    <text x="246" y="32" font-family="Arial" font-size="20" font-weight="bold" fill="white" text-anchor="middle">♪</text>
+  </g>
+  
+  <!-- Features -->
+  <g font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="white" opacity="0.85">
+    <text x="120" y="420">✓ Caption Extraction</text>
+    <text x="120" y="455">✓ AI-Powered Summaries</text>
+    <text x="120" y="490">✓ Slide Generation</text>
+    <text x="450" y="420">✓ Multi-Platform Support</text>
+    <text x="450" y="455">✓ Free &amp; Self-Hosted</text>
+    <text x="450" y="490">✓ No Account Required</text>
+  </g>
+  
+  <!-- URL -->
+  <text x="1080" y="580" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white" opacity="0.7" text-anchor="end">video-converter.iffuso.com</text>
+</svg>
+
