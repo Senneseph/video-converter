@@ -1,0 +1,10 @@
+services:
+  video-converter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: video-converter
+    ports:
+      - "127.0.0.1:4206:80"
+    restart: unless-stopped
+
