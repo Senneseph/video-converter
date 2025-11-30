@@ -1,0 +1,33 @@
+{
+  "name": "Multi-Platform Video Processor",
+  "short_name": "Video Processor",
+  "description": "Extract captions, generate summaries, and create slides from videos on YouTube, Instagram, X, Facebook, and TikTok",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity"],
+  "lang": "en-US"
+}
+

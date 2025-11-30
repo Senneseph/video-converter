@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="36" ry="36" fill="url(#grad)"/>
+  <rect x="30" y="52" width="132" height="88" rx="9" fill="white" opacity="0.95"/>
+  <!-- Film perforations -->
+  <rect x="38" y="60" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <rect x="38" y="78" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <rect x="38" y="96" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <rect x="38" y="114" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <rect x="145" y="60" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <rect x="145" y="78" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <rect x="145" y="96" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <rect x="145" y="114" width="9" height="12" rx="2" fill="url(#grad)"/>
+  <!-- Play button -->
+  <circle cx="96" cy="96" r="24" fill="url(#grad)" opacity="0.9"/>
+  <polygon points="90,84 90,108 108,96" fill="white"/>
+  <!-- Arrow -->
+  <path d="M68 158 L96 142 L124 158" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M96 142 L96 165" stroke="white" stroke-width="6" stroke-linecap="round"/>
+</svg>
+
